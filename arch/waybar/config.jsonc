@@ -1,0 +1,248 @@
+{
+  "layer": "top",
+  "position": "top",
+  "mod": "dock",
+  "exclusive": true,
+  "passthrough": false,
+  "gtk-layer-shell": true,
+  "height": 36,
+  "margin-top": 5,
+  "margin-right": 12,
+  "margin-bottom": 5,
+  "margin-left": 12,
+
+  "modules-left": [
+    "custom/rofi",
+    "custom/weather",
+    "custom/khorshididate",
+    "clock",
+    "wlr/taskbar",
+    "network#speed",
+  ],
+
+  "modules-center": ["hyprland/workspaces"],
+
+  "modules-right": [
+    "tray",
+    "custom/notification",
+    "pulseaudio",
+    "pulseaudio#microphone",
+    "backlight",
+    "cpu",
+    "memory",
+    "disk",
+    "temperature",
+    "custom/updates",
+    "network",
+    "hyprland/language",
+    "battery",
+    "custom/lock_screen",
+  ],
+
+  "network#speed": {
+    "interval": 1,
+    "format-wifi": "↓ {bandwidthDownOctets} ↑ {bandwidthUpOctets}",
+    "format-ethernet": "↓ {bandwidthDownOctets} ↑ {bandwidthUpOctets}",
+    "format-linked": "↓ 0.0MB/s ↑ 0.0MB/s",
+    "format-disconnected": "↓ 0.0MB/s ↑ 0.0MB/s",
+    "tooltip": false,
+    "min-length": 20,
+    "max-length": 20,
+    "align": 0.5,
+    "justify": "center",
+  },
+
+  "custom/rofi": {
+    "format": "",
+    "on-click": "rofi -theme ~/.config/rofi/theme/onedark_mini.rasi -show drun",
+    "tooltip": false,
+  },
+
+  "custom/notification": {
+    "format": "",
+    "tooltip": false,
+    "on-click": "swaync-client -t",
+    "on-click-right": "swaync-client -C",
+  },
+
+  "custom/power": {
+    "format": "",
+    "on-click": "sh -c 'if command -v wlogout >/dev/null 2>&1; then wlogout; elif command -v hyprshutdown >/dev/null 2>&1; then hyprshutdown; elif command -v rofi >/dev/null 2>&1; then rofi -theme ~/.config/rofi/theme/onedark_mini.rasi -show power-menu -modi power-menu:rofi-power-menu; else loginctl poweroff; fi' & disown",
+    "tooltip": false,
+  },
+
+  "custom/lock_screen": {
+    "format": "",
+    "on-click": "sh -c 'if command -v hyprlock >/dev/null 2>&1; then hyprlock; elif command -v gtklock >/dev/null 2>&1; then gtklock; elif command -v i3lock >/dev/null 2>&1; then i3lock -c 000000; else loginctl lock-session; fi' & disown",
+    "tooltip": false,
+  },
+
+  "hyprland/workspaces": {
+    "on-click": "activate",
+    "disable-scroll": true,
+    "all-outputs": false,
+    "show-special": true,
+    "persistent-workspaces": {
+      "eDP-1": [1, 2, 3, 4, 5],
+      "HDMI-A-1": [6, 7, 8],
+    },
+  },
+
+  "wlr/taskbar": {
+    "format": "{icon}",
+    "icon-size": 12,
+    "all-outputs": true,
+    "tooltip-format": "{name}: {title}",
+    "on-click": "activate",
+    "on-click-middle": "close",
+    "ignore-list": ["rofi"],
+  },
+
+  "tray": {
+    "icon-size": 12,
+    "spacing": 10,
+  },
+
+  "cpu": {
+    "interval": 10,
+    "format": " {usage}%",
+    "max-length": 10,
+    "format-alt-click": "click-right",
+    "format-alt": "",
+  },
+
+  "memory": {
+    "interval": 30,
+    "format": "{}% ",
+    "max-length": 10,
+    "tooltip": true,
+    "tooltip-format": "Memory - {used:0.1f}GB used",
+  },
+
+  "disk": {
+    "interval": 600,
+    "format": "󰋊",
+    "path": "/",
+    "format-alt-click": "click-right",
+    "format-alt": "󰋊 {percentage_used}%",
+    "tooltip": true,
+    "tooltip-format": "HDD - {used} used out of {total} on {path} ({percentage_used}%)",
+    "states": {
+      "warning": 85,
+      "critical": 90,
+    },
+  },
+
+  "temperature": {
+    "critical-threshold": 80,
+    "format": "{temperatureC}°C {icon}",
+    "format-icons": ["", "", ""],
+  },
+
+  "battery": {
+    "states": {
+      "warning": 30,
+      "critical": 20,
+    },
+    "format": "{capacity}% {icon}",
+    "format-charging": "{capacity}% ",
+    "format-plugged": "{capacity}% ",
+    "format-alt-click": "click-right",
+    "format-alt": "{time} {icon}",
+    "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+  },
+
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": " Muted",
+    "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "on-scroll-up": "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+",
+    "on-scroll-down": "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%-",
+    "scroll-step": 5,
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["", "", ""],
+    },
+    "tooltip": true,
+    "tooltip-format": "{icon} at {volume}%",
+  },
+
+  "pulseaudio#microphone": {
+    "format": "{format_source}",
+    "format-source": "",
+    "format-source-muted": "",
+    "on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
+    "on-scroll-up": "wpctl set-volume -l 1 @DEFAULT_AUDIO_SOURCE@ 5%+",
+    "on-scroll-down": "wpctl set-volume -l 1 @DEFAULT_AUDIO_SOURCE@ 5%-",
+    "scroll-step": 5,
+    "tooltip": true,
+    "tooltip-format": " at {volume}%",
+  },
+
+  "backlight": {
+    "device": "intel_backlight",
+    "format": "{icon} {percent}%",
+    "format-icons": ["󰃞", "󰃟", "󰃠"],
+    "on-scroll-up": "brightnessctl set +5%",
+    "on-scroll-down": "brightnessctl set 5%-",
+  },
+
+  "custom/weather": {
+    //shows the current weather and forecast
+    "tooltip": true,
+    "format": "{}",
+    "interval": 3600,
+    "exec": "~/.config/waybar/scripts/wttr.sh",
+    "return-type": "json",
+  },
+
+  "custom/updates": {
+    "format": "{}",
+    "exec": "~/.config/waybar/scripts/update-sys",
+    "on-click": "~/.config/waybar/scripts/update-sys update",
+    "interval": 3600,
+    "tooltip": true,
+    "signal": 8,
+    "return-type": "json",
+  },
+
+  "network": {
+    "format-wifi": "({signalStrength}%) ",
+    "format-ethernet": "{ipaddr}/{cidr} ",
+    "tooltip-format": "{ifname} via {gwaddr} ",
+    "format-linked": "{ifname} (No IP) ",
+    "format-disconnected": "Disconnected ⚠",
+    "format-alt": "{ifname}: {ipaddr}/{cidr}",
+    "max-length": 50,
+  },
+
+  "clock": {
+    "timezone": "Asia/Dhaka",
+    "format": " {:%I:%M %p}",
+    "tooltip": true,
+    "on-click": "setbg",
+    "tooltip-format": " {:%A, %B %e %Y}",
+  },
+
+  "custom/khorshididate": {
+    "tooltip": true,
+    "format": " {}",
+    "format-alt": " {alt}",
+    "format-alt-click": "click-right",
+    "interval": 3600,
+    "exec": "~/.config/waybar/scripts/khorshidi-date",
+    "return-type": "json",
+  },
+
+  "hyprland/language": {
+    "format": "{}",
+    "on-click": "hyprctl switchxkblayout at-translated-set-2-keyboard next",
+    "format-en": "EN",
+    "format-fa": "FA",
+  },
+}
